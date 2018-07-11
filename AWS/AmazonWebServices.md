@@ -1,6 +1,6 @@
 # Basic tasks with Amazon Web Services (AWS)
 ##  1. AWS Management Console
-### 1.1 [Amazon EMR Management Guide](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) - Summary
+### 1.1 Amazon EMR [Management Guide](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) - Summary
 This section is a summary of Amazon tutorial to create a cluster where Zeppelin notebooks run. An Overview of Amazon EMR could be found in this [link](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html).
 
 **Important note:** The clusters which you create will be charge for using AWS resources. Therefore, remember to terminate the clusters when you finish. 
@@ -26,18 +26,50 @@ This section is a summary of AWS Command Line Interface - [User Guide](https://d
 
 ##  3. Creating bash shell scripts to create a cluster
 Another way to create a cluster is using bash shell scripts which is basically a defined configurations of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
+
+#### Set up prerequisites
+In order to create a cluster from bash shell scripts, you may need [Git BASH/GUI](https://gitforwindows.org/) to run .sh files. 
 #### Create "ec2-attributes.json" file
-  "ec2-attributes.json" contains  _Network and hardware_ as well as _Security and access_ parameters which includes:
-- Keyname
+  "ec2-attributes.json" contains  _Network_ as well as _Security and access_ parameters including:
+- Keyname: Name of the keypair
 - InstanceProfile
 - SubnetID
 - EMRManagedSlaveSecurityGroup
 - EMRManagedMasterSecurityGroup
+```
+{
+  "KeyName": "intellihq_zeppelin_keypair", 
+  "InstanceProfile": "EMR_EC2_DefaultRole",
+  "SubnetId": "subnet-14e57f73",
+  
+ 
+  "EmrManagedSlaveSecurityGroup": "sg-0eef0776",
+  "EmrManagedMasterSecurityGroup": "sg-65e20a1d"
+}
+```
 #### Create "instance-group.json" file
+"instance-group.json" contains  _hardware_ parameters including:
 - InstanceCount
 - InstanceGroupType
 - InstanceType
 - Name
+
+```
+[
+  {
+    "InstanceCount": 1,
+    "InstanceGroupType": "MASTER",
+    "InstanceType": "m4.large",
+    "Name": "Master Instance Group"
+  },
+  {
+    "InstanceCount": 2,
+    "InstanceGroupType": "CORE",
+    "InstanceType": "m4.large",
+    "Name": "Core Instance Group"
+  }
+]
+```
 #### Create "configurations.json" file
 - The "spark" classification
 ```
