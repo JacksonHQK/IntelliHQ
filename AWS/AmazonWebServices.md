@@ -23,12 +23,22 @@ This section is a summary of AWS Command Line Interface - [User Guide](https://d
 - Install pip
 - Install AWS CLI
 ### 2.2 Configuring the AWS CLI
-
+- Obtain AWS Access Key ID and Secret Key Access
+  From **AWS Management Console** window --> **Services** --> **IAM** (under **Security, Identity & Compliance** group) --> **Users** (from the left column) --> Choose your Username --> Choose **Security credentials** tab --> Click on **Create access key** under **Access keys** section. Save the **Access key ID** and **Secret Key Access**.
+- Import AWS profile by typing **aws configure --profile <profile name>** from Windows Commnand Line.
+```
+$ aws configure --profile <default>
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]: ap-southeast-2
+Default output format [None]: ENTER
+ ```
+  
 ##  3. Creating bash shell scripts to create a cluster
 Another way to create a cluster is using bash shell scripts which is basically a defined configurations of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 
 #### Set up prerequisites
-In order to create a cluster from bash shell scripts, you may need [Git BASH/GUI](https://gitforwindows.org/) to run .sh files. 
+In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI](https://gitforwindows.org/) to run .sh files. 
 #### Create "ec2-attributes.json" file
   "ec2-attributes.json" contains  _Network_ as well as _Security and access_ parameters including:
 - Keyname: Name of the keypair
