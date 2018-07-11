@@ -25,7 +25,7 @@ This section is a summary of AWS Command Line Interface - [User Guide](https://d
 ### 2.2 Configuring the AWS CLI
 
 ##  3. Creating bash shell scripts to create a cluster
-This section will show how to write a .sh file along with its parameter files to create a cluster.
+Another way to create a cluster is using bash shell scripts which is basically a defined configurations of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 #### Create "ec2-attributes.json" file
   "ec2-attributes.json" contains  _Network and hardware_ as well as _Security and access_ parameters which includes:
 - Keyname
@@ -39,7 +39,7 @@ This section will show how to write a .sh file along with its parameter files to
 - InstanceType
 - Name
 #### Create "configurations.json" file
-- 
+- The "spark" classification
 ```
   {
     "Classification": "spark",
@@ -49,7 +49,7 @@ This section will show how to write a .sh file along with its parameter files to
     "Configurations": []
   },
 ```
-
+- The "spark-hive-site" classification allows [using the AWS Glue Data Catalog as the Metastore](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-glue.html). By doing that the metastore can be shared by different clusters, services, and applications. 
 ```
   {
     "Classification": "spark-hive-site",
@@ -59,7 +59,7 @@ This section will show how to write a .sh file along with its parameter files to
     "Configurations": []
   },
 ```
-
+- The "zeppelin-env" classification defines S3 bucket which stores Zeppelin notebook and data files.
 ```
   {
     "Classification": "zeppelin-env",
@@ -82,8 +82,9 @@ This section will show how to write a .sh file along with its parameter files to
 #### Create "deployment.sh" file
 
 ##  4. Relevant topics
-
-
+- [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html) 
+- [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
+- [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
 # Acknowledgments
 
 * Hat tip to anyone whose code was used
