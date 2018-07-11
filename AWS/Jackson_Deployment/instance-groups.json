@@ -1,0 +1,14 @@
+[
+  {
+    "InstanceCount": 1,
+    "InstanceGroupType": "MASTER",
+    "InstanceType": "m4.large",
+    "Name": "Master Instance Group"
+  },
+  {
+    "InstanceCount": 2,
+    "InstanceGroupType": "CORE",
+    "InstanceType": "m4.large",
+    "Name": "Core Instance Group"
+  }
+]

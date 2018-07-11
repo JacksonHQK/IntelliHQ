@@ -1,0 +1,33 @@
+[
+  {
+    "Classification": "spark",
+    "Properties": {
+      "maximizeResourceAllocation": "true"
+    },
+    "Configurations": []
+  },
+  {
+    "Classification": "spark-hive-site",
+    "Properties": {
+      "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+    },
+    "Configurations": []
+  },
+  {
+    "Classification": "zeppelin-env",
+    "Properties": {
+    },
+    "Configurations": [
+      {
+        "Classification": "export",
+        "Properties": {
+            "ZEPPELIN_WEBSOCKET_MAX_TEXT_MESSAGE_SIZE": "3072000",
+            "ZEPPELIN_NOTEBOOK_S3_BUCKET": "jackie-bucket-zeppelin",
+            "ZEPPELIN_NOTEBOOK_S3_USER": "zeppelin",
+            "ZEPPELIN_NOTEBOOK_STORAGE": "org.apache.zeppelin.notebook.repo.S3NotebookRepo"
+        },
+        "Configurations": []
+      }
+    ]
+  }
+]

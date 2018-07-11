@@ -1,0 +1,9 @@
+{
+  "KeyName": "intellihq_zeppelin_keypair", 
+  "InstanceProfile": "EMR_EC2_DefaultRole",
+  "SubnetId": "subnet-14e57f73",
+  
+ 
+  "EmrManagedSlaveSecurityGroup": "sg-0eef0776",
+  "EmrManagedMasterSecurityGroup": "sg-65e20a1d"
+}
