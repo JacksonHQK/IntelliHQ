@@ -17,12 +17,75 @@ This section is a summary of Amazon tutorial to create a cluster where Zeppelin 
 ### 1.2 Amazon EC2
 
 ##  2. AWS Command Line Interface (AWS CLI)
-This section is a summary of AWS Command Line Interface - [User Guide](https://docs.aws.amazon.com/cli/latest/userguide/aws-cli.pdf)
+This section is a summary of AWS Command Line Interface - [User Guide](https://docs.aws.amazon.com/cli/latest/userguide/aws-cli.pdf).
 ### 2.1 Installing AWS CLI
 - Install Python
 - Install pip
 - Install AWS CLI
 ### 2.2 Configuring the AWS CLI
-###
 
-##   3. Relevant topics
+##  3. Creating bash shell scripts to create a cluster
+This section will show how to write a .sh file along with its parameter files to create a cluster.
+#### Create "ec2-attributes.json" file
+  "ec2-attributes.json" contains  _Network and hardware_ as well as _Security and access_ parameters which includes:
+- Keyname
+- InstanceProfile
+- SubnetID
+- EMRManagedSlaveSecurityGroup
+- EMRManagedMasterSecurityGroup
+#### Create "instance-group.json" file
+- InstanceCount
+- InstanceGroupType
+- InstanceType
+- Name
+#### Create "configurations.json" file
+- 
+```
+  {
+    "Classification": "spark",
+    "Properties": {
+      "maximizeResourceAllocation": "true"
+    },
+    "Configurations": []
+  },
+```
+
+```
+  {
+    "Classification": "spark-hive-site",
+    "Properties": {
+      "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+    },
+    "Configurations": []
+  },
+```
+
+```
+  {
+    "Classification": "zeppelin-env",
+    "Properties": {
+    },
+    "Configurations": [
+      {
+        "Classification": "export",
+        "Properties": {
+            "ZEPPELIN_WEBSOCKET_MAX_TEXT_MESSAGE_SIZE": "3072000",
+            "ZEPPELIN_NOTEBOOK_S3_BUCKET": "jackie-bucket-zeppelin",
+            "ZEPPELIN_NOTEBOOK_S3_USER": "zeppelin",
+            "ZEPPELIN_NOTEBOOK_STORAGE": "org.apache.zeppelin.notebook.repo.S3NotebookRepo"
+        },
+        "Configurations": []
+      }
+    ]
+  }
+```
+#### Create "deployment.sh" file
+
+##  4. Relevant topics
+
+
+# Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
