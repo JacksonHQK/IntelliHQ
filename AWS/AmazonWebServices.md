@@ -257,10 +257,15 @@ aws emr create-cluster \
 
 ##  4. Relevant topics
 [1]. [Creating a Spark Cluster on AWS EMR: a Tutorial](http://queirozf.com/entries/creating-a-spark-cluster-on-aws-emr-a-tutorial)
-[2]. [Add an Apache Zeppelin UI to your Spark cluster on AWS EMR](http://queirozf.com/entries/add-an-apache-zeppelin-ui-to-your-spark-cluster-on-aws-emr) 
+
+[2]. [Add an Apache Zeppelin UI to your Spark cluster on AWS EMR](http://queirozf.com/entries/add-an-apache-zeppelin-ui-to-your-spark-cluster-on-aws-emr)
+
 [3]. [Creates an cluster with the specified configurations](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
+
 [4]. [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html)
+
 [5]. [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
+
 [6]. [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
 
 # Acknowledgments
