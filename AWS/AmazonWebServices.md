@@ -14,16 +14,21 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
 - Using Quick Cluster Configuration Overview: to quickly create a cluster, open the [Amzon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
   - General Configuration
     - Cluster name
-      - Logging
-      - S3 folder
+      - Logging: Enable/Disable Amazon EMR writes detailed log data.
+      - S3 folder: Specify a S3 bucket to store the log.
     - Launch mode
+      - Cluster: Amazon EMR will launch a cluster with applications from "Software Configuration".
+      - Step execution: Steps which specify the included applications will be added. The cluster will be automatically terminated after all of the steps complete.
+      
   - Software Configuration
-    - Release
-    - Applications
-    - Use AWS Glue Data Catalog for table metadata: [link](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-glue.html)
+    - Release: Specify the software and Amazon EMR platform components to install on the cluster. Normally, the latest release is chosen.
+    - Applications: Specify the applications to install on the cluster.
+    - Use AWS Glue Data Catalog for table metadata: Use the AWS Glue Data Catalog to provide an external Hive metastore for Hive. More information about AWS GLue Data Catalog could be found in this [link](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-glue.html).
+    
   - Hardware Configuration
-    - Instance type
-    - Number of instances
+    - Instance type: Select the Amazon EC2 instance type that run in your cluster. Each type of instances is a combination of CPU, memory, storage and networking capacity. More information about Amazon EC2 Instance Types could be found in this [link](https://aws.amazon.com/ec2/instance-types/).
+    - Number of instances: Select number if instances. Each instance corresponds to a note in EMR cluster. Amazon will charge base on type and number of used instances. More information about Amazon EC2 Pricing could be found in this [link](https://aws.amazon.com/ec2/pricing/).
+
   - Security and access
     - EC2 key pair
     - Permissions
@@ -33,8 +38,14 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
 
 - Lauch the Sample Cluster
 ####    Step 3: [Prepare your sample data and script](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prepare-data-and-script.html)
+- Sample Data Overview
+- Sample Hive Script Overview
 ####    Step 4: [Process your sample data](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
+- Submit the Hive Script as a Step
+- View the Results
 ####    Step 5: [Reset your environment](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-reset-environment.html)
+- Deleting Your Amazon S3 Bucket
+- Terminating Your Cluster
 ### 1.2 Amazon EC2
 
 ##  2. AWS Command Line Interface (AWS CLI)
