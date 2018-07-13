@@ -1,15 +1,36 @@
 # Basic tasks with Amazon Web Services (AWS)
+This document summarise some useful topics which are necessary to get Zeppelin notebooks to run on Elastic Map Reduce (EMR) cluster. The first section of the document shows how to use web console interface. The second section provide some how to create a cluster using AWS Commnad Line Interface. Finally, the third section gives an case study of writing bash shell scripts to create a cluster.
 ##  1. AWS Management Console
 ### 1.1 Amazon EMR [Management Guide](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) - Summary
-This section is a summary of Amazon tutorial to create a cluster where Zeppelin notebooks run. An Overview of Amazon EMR could be found in this [link](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html).
+This section is a summary of Amazon tutorial to create an EMR cluster to run Zeppelin notebooks. An Overview of Amazon EMR could be found in this [link](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html).
 
 **Important note:** The clusters which you create will be charge for using AWS resources. Therefore, remember to terminate the clusters when you finish. 
+
 ####    Step 1: [Set up prerequisites](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prerequisites.html)
 - Sign Up for AWS
 - Create an Amazon S3 Bucket
 - Create an Amazon EC2 Key Pair
 ####    Step 2: [Launch Your Sample Cluster](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
-- Using Quick Cluster Configuration Overview
+- Using Quick Cluster Configuration Overview: to quickly create a cluster, open the [Amzon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
+  - General Configuration
+    - Cluster name
+      - Logging
+      - S3 folder
+    - Launch mode
+  - Software Configuration
+    - Release
+    - Applications
+    - Use AWS Glue Data Catalog for table metadata: [link](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-glue.html)
+  - Hardware Configuration
+    - Instance type
+    - Number of instances
+  - Security and access
+    - EC2 key pair
+    - Permissions
+      - EMR Role
+      - EC2 instance profile
+    
+
 - Lauch the Sample Cluster
 ####    Step 3: [Prepare your sample data and script](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prepare-data-and-script.html)
 ####    Step 4: [Process your sample data](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
@@ -39,13 +60,13 @@ Another way to create a cluster is using bash shell scripts which is basically a
 
 #### Set up prerequisites
 In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI](https://gitforwindows.org/) to run .sh files. 
-#### Create "ec2-attributes.json" file
+#### - Create "ec2-attributes.json" file
   "ec2-attributes.json" contains  _Network_ as well as _Security and access_ parameters including:
-- Keyname: Name of the keypair
-- InstanceProfile
-- SubnetID
-- EMRManagedSlaveSecurityGroup
-- EMRManagedMasterSecurityGroup
+-- Keyname: Name of the keypair
+-- InstanceProfile
+-- SubnetID
+-- EMRManagedSlaveSecurityGroup
+-- EMRManagedMasterSecurityGroup
 ```
 {
   "KeyName": "intellihq_zeppelin_keypair", 
@@ -57,7 +78,7 @@ In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI
   "EmrManagedMasterSecurityGroup": "sg-65e20a1d"
 }
 ```
-#### Create "instance-group.json" file
+#### - Create "instance-group.json" file
 "instance-group.json" contains  _hardware_ parameters including:
 - InstanceCount
 - InstanceGroupType
@@ -80,7 +101,7 @@ In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI
   }
 ]
 ```
-#### Create "configurations.json" file
+#### - Create "configurations.json" file
 - The "spark" classification
 ```
   {
@@ -121,7 +142,32 @@ In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI
     ]
   }
 ```
-#### Create "deployment.sh" file
+#### - Create "deployment.sh" file
+
+```
+#!/bin/bash
+
+set -e
+set -u
+set -x
+
+# requires the profile to be added as parameters to this i.e. --profile myprofile
+
+# deploy the cluster
+aws emr create-cluster \
+	--name 'defined configurations cluster' \
+	--instance-groups file://./instance-groups.json \
+	--release-label emr-5.13.0\
+	--ec2-attributes file://./ec2-attributes.json \
+	--service-role EMR_DefaultRole \
+    --applications Name=Spark Name=Zeppelin Name=Hadoop Name=Hive\
+	--configurations file://./configurations.json \
+    --region ap-southeast-2 \
+	--no-auto-terminate \
+#	--scale-down-behavior TERMINATE_AT_TASK_COMPLETION \
+    $@
+
+```
 
 ##  4. Relevant topics
 - [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html) 
