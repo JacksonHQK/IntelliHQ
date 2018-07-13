@@ -1,7 +1,7 @@
 # Basic tasks with Amazon Web Services (AWS)
-This document summarises some useful topics which are necessary to get Zeppelin notebooks to run on Elastic Map Reduce (EMR) cluster. The first section of the document shows how to use the web console interface. The second section provides how to create a cluster using AWS Command Line Interface. Finally, the third section gives an example of writing bash shell scripts to create a cluster.
+This document summarises some useful topics which are necessary to get Zeppelin notebooks to run on Elastic Map Reduce (EMR) cluster. The first section of the document shows how to use the web console interface. The second section shows how to create a cluster using AWS Command Line Interface. Finally, the third section gives an example of writing bash shell scripts to create a cluster.
 ##  1. AWS Management Console
-### 1.1 Amazon EMR [Management Guide](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) - Summary
+### 1.1. Amazon EMR Management [Guide](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) - Summary
 This section is a summary of Amazon tutorial to create an EMR cluster to run Zeppelin notebooks. An Overview of Amazon EMR could be found in this [link](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html).
 
 **Important note:** The clusters which you create will be charged for using AWS resources. Therefore, remember to terminate the clusters when you finish. 
@@ -11,10 +11,10 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
 - [ ] Create an [Amazon S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html)
 - [ ] Create an [Amazon EC2 Key Pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 ####    Step 2: [Launch Your Sample Cluster](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
-Using Quick Cluster Configuration Overview: to quickly create a cluster, open the [Amazon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
+Using Quick Cluster Configuration Overview: To quickly create a cluster, open the [Amazon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
   - General Configuration
     - Cluster name
-      - Logging: Enable/Disable Amazon EMR writes detailed log data.
+    - Logging: Enable/Disable Amazon EMR writes detailed log data.
       - S3 folder: Specify an S3 bucket to store the log.
     - Launch mode
       - Cluster: Amazon EMR will launch a cluster with applications from "Software Configuration".
@@ -48,15 +48,15 @@ Depending on the applications which are used, one or more steps will be added in
 - View the Results: To check the result, click on **Configuration** tab then choose **View JSON**.
 ####    Step 5: Connect to the master node of the cluster
 ##### - Using SSH
-In the Command Line window, type: shh hadoop@< Master public DNS > -i < path to the private key file >. **Note**: the private key file must be in **.pem** format.
+In the Command Line window, type: **shh hadoop@< Master public DNS > -i < path to the private key file >**. **Note**: The private key file must be in **.pem** format.
 	
 ```
 ssh hadoop@ec2-54-206-???-??.ap-southeast-2.compute.amazonaws.com -i ***\_CreatingCluster\intellihq_zeppelin_keypair.pem
 ```
 ##### - Using Putty: 
 From the Putty window
-  - Category list --> Session --> type hadoop@< Master public DNS >
-  - Category list --> Connection --> SSH --> Auth --> click Browse and select the private key file. Please note that the private key file must be in **.ppk** format.
+  - Category list --> Session --> type **hadoop@< Master public DNS >**
+  - Category list --> Connection --> SSH --> Auth --> click Browse and select the private key file. **Note**: The private key file must be in **.ppk** format.
   - Click **Open**.
 ####    Step 6: Open Zeppelin application
 In Aamzon EMR console, choose your cluster --> Summary tab --> Connections --> Zeppelin
@@ -64,16 +64,16 @@ In Aamzon EMR console, choose your cluster --> Summary tab --> Connections --> Z
 ##### - Deleting Your Amazon S3 Bucket
 From Amazon S3 console, choose the bucket you want to delete. Then type the name of the bucket to confirm deletion.
 ##### - Terminating Your Cluster
-In Aamzon EMR console, choose the cluster you want to terminate. In the top section of the page, click on **Terminate**. **Note**: You cannot restart terminated clusters but clone them.
-### 1.2 Amazon EC2
+In Amazon EMR console, choose the cluster you want to terminate. In the top section of the page, click on **Terminate**. **Note**: You cannot restart terminated clusters but clone them.
+### 1.2. Amazon EC2
 
 ##  2. AWS Command Line Interface (AWS CLI)
 This section is a summary of AWS Command Line Interface - [User Guide](https://docs.aws.amazon.com/cli/latest/userguide/aws-cli.pdf).
-### 2.1 Installing AWS CLI
+### 2.1. Installing AWS CLI
 - [ ] Install Python
 - [ ] Install pip
 - [ ] Install AWS CLI
-### 2.2 Configuring the AWS CLI
+### 2.2. Configuring the AWS CLI
 - Obtain AWS Access Key ID and Secret Key Access
   From **AWS Management Console** window --> **Services** --> **IAM** (under **Security, Identity & Compliance** group) --> **Users** (from the left column) --> Choose your Username --> Choose **Security credentials** tab --> Click on **Create access key** under **Access keys** section. Save the **Access Key ID** and **Secret Key Access**.
 - Import AWS profile by typing **aws configure --profile < profile name >** from Windows Command Line.
@@ -84,7 +84,7 @@ AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: ap-southeast-2
 Default output format [None]: ENTER
  ```
- ### 2.3 Create a Security Group and Key Pair for the EC2 Instance
+ ### 2.3. Creating a Security Group and Key Pair for the EC2 Instance
  From the Windows Command Line, create a new security group and add a rule using [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
  ```
  $ aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "security group for development environment"
@@ -97,7 +97,7 @@ $ aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp
  ```
  $ aws ec2 create-key-pair --key-name devenv-key --query 'KeyMaterial' --output text > devenv-key.pem
  ```
-  ### 2.4 Launch and Connect to the Instance
+  ### 2.4. Launching and Connect to the Instance
   Launch the specified number of EC2 instances using [run-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html)
   ```
   $ aws ec2 run-instances --image-id ami-xxxxxxxx --subnet-id subnet-xxxxxxxx --security-group-ids sg-b018ced5 --count 1 --instance-type t2.micro --key-name devenv-key --query 'Instances[0].InstanceId'
@@ -112,8 +112,8 @@ $ aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp
   ```
   $ ssh -i devenv-key.pem user@54.183.22.255
   ```
-  ### 2.5 Create a EMR Cluster
-  Create a EMR cluster using [create-cluster](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
+  ### 2.5. Creating a EMR Cluster
+ Create an EMR cluster using [create-cluster](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
  ```
  $ aws emr create-cluster \
     --name "1-node dummy cluster" \
