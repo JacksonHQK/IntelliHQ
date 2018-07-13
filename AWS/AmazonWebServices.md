@@ -7,11 +7,11 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
 **Important note:** The clusters which you create will be charge for using AWS resources. Therefore, remember to terminate the clusters when you finish. 
 
 ####    Step 1: [Set up prerequisites](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prerequisites.html)
-- Sign Up for AWS
-- Create an Amazon S3 Bucket
-- Create an Amazon EC2 Key Pair
+- [ ] Sign Up for AWS
+- [ ] Create an [Amazon S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html)
+- Create an [Amazon EC2 Key Pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 ####    Step 2: [Launch Your Sample Cluster](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
-- Using Quick Cluster Configuration Overview: to quickly create a cluster, open the [Amzon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
+Using Quick Cluster Configuration Overview: to quickly create a cluster, open the [Amazon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
   - General Configuration
     - Cluster name
       - Logging: Enable/Disable Amazon EMR writes detailed log data.
@@ -30,19 +30,22 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
     - Number of instances: Select number if instances. Each instance corresponds to a note in EMR cluster. Amazon will charge base on type and number of used instances. More information about Amazon EC2 Pricing could be found in this [link](https://aws.amazon.com/ec2/pricing/).
 
   - Security and access
-    - EC2 key pair
-    - Permissions
-      - EMR Role
-      - EC2 instance profile
-    
+    - EC2 key pair: Use an existing EC2 key pair to SSH into the master node of EMR cluster.
+    - Permissions: Determine the permissions for EMR cluster.    
+  - Choose **Create cluster**
 
-- Lauch the Sample Cluster
 ####    Step 3: [Prepare your sample data and script](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prepare-data-and-script.html)
 - Sample Data Overview
 - Sample Hive Script Overview
 ####    Step 4: [Process your sample data](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
-- Submit the Hive Script as a Step
-- View the Results
+Depending on the applications which are used, one or more steps will be added in the Amazon EMR console.
+- Submit the Hive Script as a Step: In the Amazon EMR console, choose your cluster. Click on **Steps** tabs --> **Add step**
+  - Step type
+  - Name
+  - JAR location
+  - Arguments
+  - Action on failure
+- View the Results: To check the result, click on **Configuartion** tab then choose **View JSON**.
 ####    Step 5: [Reset your environment](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-reset-environment.html)
 - Deleting Your Amazon S3 Bucket
 - Terminating Your Cluster
@@ -51,9 +54,9 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
 ##  2. AWS Command Line Interface (AWS CLI)
 This section is a summary of AWS Command Line Interface - [User Guide](https://docs.aws.amazon.com/cli/latest/userguide/aws-cli.pdf).
 ### 2.1 Installing AWS CLI
-- Install Python
-- Install pip
-- Install AWS CLI
+- [ ] Install Python
+- [ ] Install pip
+- [ ] Install AWS CLI
 ### 2.2 Configuring the AWS CLI
 - Obtain AWS Access Key ID and Secret Key Access
   From **AWS Management Console** window --> **Services** --> **IAM** (under **Security, Identity & Compliance** group) --> **Users** (from the left column) --> Choose your Username --> Choose **Security credentials** tab --> Click on **Create access key** under **Access keys** section. Save the **Access key ID** and **Secret Key Access**.
@@ -113,6 +116,7 @@ In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI
 ]
 ```
 #### - Create "configurations.json" file
+"configurations.json" file contains all information of steps which were added into the cluster.
 - The "spark" classification
 ```
   {
