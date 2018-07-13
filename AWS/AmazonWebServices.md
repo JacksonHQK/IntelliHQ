@@ -46,10 +46,25 @@ Depending on the applications which are used, one or more steps will be added in
   - Arguments
   - Action on failure
 - View the Results: To check the result, click on **Configuration** tab then choose **View JSON**.
-####    Step 5: [Reset your environment](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-reset-environment.html)
-- Deleting Your Amazon S3 Bucket
-- Terminating Your Cluster
-
+####    Step 5: Connect to the master node of the cluster
+##### - Using SSH
+In the Command Line window, type: shh hadoop@< Master public DNS > -i < path to the private key file >. **Note**: the private key file must be in **.pem** format.
+	
+```
+ssh hadoop@ec2-54-206-???-??.ap-southeast-2.compute.amazonaws.com -i ***\_CreatingCluster\intellihq_zeppelin_keypair.pem
+```
+##### - Using Putty: 
+From the Putty window
+  - Category list --> Session --> type hadoop@< Master public DNS >
+  - Category list --> Connection --> SSH --> Auth --> click Browse and select the private key file. Please note that the private key file must be in **.ppk** format.
+  - Click **Open**.
+####    Step 6: Open Zeppelin application
+In Aamzon EMR console, choose your cluster --> Summary tab --> Connections --> Zeppelin
+####    Step 7: [Reset your environment](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-reset-environment.html)
+##### - Deleting Your Amazon S3 Bucket
+From Amazon S3 console, choose the bucket you want to delete. Then type the name of the bucket to confirm deletion.
+##### - Terminating Your Cluster
+In Aamzon EMR console, choose the cluster you want to terminate. In the top section of the page, click on **Terminate**. **Note**: You cannot restart terminated clusters but clone them.
 ### 1.2 Amazon EC2
 
 ##  2. AWS Command Line Interface (AWS CLI)
@@ -61,7 +76,7 @@ This section is a summary of AWS Command Line Interface - [User Guide](https://d
 ### 2.2 Configuring the AWS CLI
 - Obtain AWS Access Key ID and Secret Key Access
   From **AWS Management Console** window --> **Services** --> **IAM** (under **Security, Identity & Compliance** group) --> **Users** (from the left column) --> Choose your Username --> Choose **Security credentials** tab --> Click on **Create access key** under **Access keys** section. Save the **Access Key ID** and **Secret Key Access**.
-- Import AWS profile by typing **aws configure --profile <profile name>** from Windows Command Line.
+- Import AWS profile by typing **aws configure --profile < profile name >** from Windows Command Line.
 ```
 $ aws configure --profile <default>
 AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
@@ -73,7 +88,7 @@ Default output format [None]: ENTER
 ##  3. Creating bash shell scripts to create a cluster
 Another way to create a cluster is using bash shell scripts which is basically a defined configuration of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 
-#### Set up prerequisites
+#### - Set up prerequisites
 In order to create a cluster from bash shell scripts, you need to
 - [ ] Install Python
 - [ ] Install pip
@@ -142,7 +157,7 @@ In order to create a cluster from bash shell scripts, you need to
     "Configurations": []
   },
 ```
-- The "zeppelin-env" classification defines S3 bucket, which stores Zeppelin notebook and data files, and the S3 user. Note that S3 user is specified as a sub-folder insider S3 bucket.
+- The "zeppelin-env" classification defines S3 bucket, which stores Zeppelin notebook and data files, and the S3 user. **Note**: S3 user is specified as a sub-folder insider S3 bucket.
 ```
   {
     "Classification": "zeppelin-env",
@@ -192,7 +207,7 @@ aws emr create-cluster \
 ##  4. Relevant topics
 - [1]. [Creating a Spark Cluster on AWS EMR: a Tutorial](http://queirozf.com/entries/creating-a-spark-cluster-on-aws-emr-a-tutorial)
 - [2]. [Add an Apache Zeppelin UI to your Spark cluster on AWS EMR](http://queirozf.com/entries/add-an-apache-zeppelin-ui-to-your-spark-cluster-on-aws-emr) 
-- [3]. [Creates an Amazon EMR cluster with the specified configurations](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
+- [3]. [Creates an cluster with the specified configurations](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
 - [4]. [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html)
 - [5]. [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
 - [6]. [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
