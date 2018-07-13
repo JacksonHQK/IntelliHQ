@@ -9,7 +9,7 @@ This section is a summary of Amazon tutorial to create an EMR cluster to run Zep
 ####    Step 1: [Set up prerequisites](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prerequisites.html)
 - [ ] Sign Up for AWS
 - [ ] Create an [Amazon S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html)
-- Create an [Amazon EC2 Key Pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
+- [ ] Create an [Amazon EC2 Key Pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 ####    Step 2: [Launch Your Sample Cluster](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-launch-sample-cluster.html)
 Using Quick Cluster Configuration Overview: to quickly create a cluster, open the [Amazon EMR console](https://console.aws.amazon.com/elasticmapreduce/), then click on **Create Cluster** to open **Create Cluster - Quick Options** page.
   - General Configuration
@@ -142,7 +142,7 @@ In order to create a cluster from bash shell scripts, you need to
     "Configurations": []
   },
 ```
-- The "zeppelin-env" classification defines S3 bucket which stores Zeppelin notebook and data files.
+- The "zeppelin-env" classification defines S3 bucket, which stores Zeppelin notebook and data files, and the S3 user. Note that S3 user is specified as a sub-folder insider S3 bucket.
 ```
   {
     "Classification": "zeppelin-env",
@@ -163,7 +163,7 @@ In order to create a cluster from bash shell scripts, you need to
   }
 ```
 #### - Create "deployment.sh" file
-
+"deployment.sh" file is a master file which links all parameter files such as "configurations.json", "instance-group.json".
 ```
 #!/bin/bash
 
@@ -175,7 +175,7 @@ set -x
 
 # deploy the cluster
 aws emr create-cluster \
-	--name 'defined configurations cluster' \
+	--name 'My cluster' \
 	--instance-groups file://./instance-groups.json \
 	--release-label emr-5.13.0\
 	--ec2-attributes file://./ec2-attributes.json \
@@ -199,4 +199,4 @@ aws emr create-cluster \
 
 # Acknowledgments
 * [AWS Documentation](https://aws.amazon.com/documentation/)
-* Sample codes supplied by Techconnect
+* Sample codes supplied by **Tech-connect**
