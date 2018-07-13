@@ -85,7 +85,7 @@ Default region name [None]: ap-southeast-2
 Default output format [None]: ENTER
  ```
  ### 2.3 Create a Security Group and Key Pair for the EC2 Instance
- From the Windows Command Line, create a new security group and add a rule using command [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
+ From the Windows Command Line, create a new security group and add a rule using [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
  ```
  $ aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "security group for development environment"
 {
@@ -98,17 +98,44 @@ $ aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp
  $ aws ec2 create-key-pair --key-name devenv-key --query 'KeyMaterial' --output text > devenv-key.pem
  ```
   ### 2.4 Launch and Connect to the Instance
-  Launch the specified number of EC2 instances using command [run-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html)
+  Launch the specified number of EC2 instances using [run-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html)
   ```
   $ aws ec2 run-instances --image-id ami-xxxxxxxx --subnet-id subnet-xxxxxxxx --security-group-ids sg-b018ced5 --count 1 --instance-type t2.micro --key-name devenv-key --query 'Instances[0].InstanceId'
 "i-0787e4282810ef9cf"
   ```
-  Get the public IP address of the instance using commnad [describe-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
+  Get the public IP address of the instance using [describe-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
   ```
  $ aws ec2 describe-instances --instance-ids i-0787e4282810ef9cf --query 'Reservations[0].Instances[0].PublicIpAddress'
 "54.183.22.255"
   ```
+  Connect to the instance using private key and the public IP address
+  ```
+  $ ssh -i devenv-key.pem user@54.183.22.255
+  ```
   ### 2.5 Create a EMR Cluster
+  Create a EMR cluster using [create-cluster](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
+ ```
+ $ aws emr create-cluster \
+    --name "1-node dummy cluster" \
+    --instance-type m3.xlarge \
+    --release-label emr-4.1.0 \
+    --instance-count 1 \
+    --use-default-roles \
+    --applications Name=Spark \
+    --auto-terminate
+```
+Check status of all clusters visible to this AWS account using [list-clusters](https://docs.aws.amazon.com/cli/latest/reference/emr/list-clusters.html)
+```
+  list-clusters
+[--created-after <value>]
+[--created-before <value>]
+[--cluster-states <value>]
+[--active | --terminated | --failed]
+[--cli-input-json <value>]
+[--starting-token <value>]
+[--max-items <value>]
+[--generate-cli-skeleton <value>]
+```
 ##  3. Creating bash shell scripts to create a cluster
 Another way to create a cluster is using bash shell scripts which is basically a defined configuration of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 
@@ -229,12 +256,12 @@ aws emr create-cluster \
 ```
 
 ##  4. Relevant topics
-- [1]. [Creating a Spark Cluster on AWS EMR: a Tutorial](http://queirozf.com/entries/creating-a-spark-cluster-on-aws-emr-a-tutorial)
-- [2]. [Add an Apache Zeppelin UI to your Spark cluster on AWS EMR](http://queirozf.com/entries/add-an-apache-zeppelin-ui-to-your-spark-cluster-on-aws-emr) 
-- [3]. [Creates an cluster with the specified configurations](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
-- [4]. [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html)
-- [5]. [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
-- [6]. [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
+[1]. [Creating a Spark Cluster on AWS EMR: a Tutorial](http://queirozf.com/entries/creating-a-spark-cluster-on-aws-emr-a-tutorial)
+[2]. [Add an Apache Zeppelin UI to your Spark cluster on AWS EMR](http://queirozf.com/entries/add-an-apache-zeppelin-ui-to-your-spark-cluster-on-aws-emr) 
+[3]. [Creates an cluster with the specified configurations](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
+[4]. [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html)
+[5]. [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
+[6]. [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
 
 # Acknowledgments
 * [AWS Documentation](https://aws.amazon.com/documentation/)
