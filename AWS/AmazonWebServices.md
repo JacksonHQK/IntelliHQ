@@ -84,7 +84,9 @@ AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: ap-southeast-2
 Default output format [None]: ENTER
  ```
-  
+ ### 2.3 Create a Security Group and Key Pair for the EC2 Instance
+ ### 2.4 Launch and Connect to the Instance
+ ### 2.5 Create a EMR Cluster
 ##  3. Creating bash shell scripts to create a cluster
 Another way to create a cluster is using bash shell scripts which is basically a defined configuration of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 
