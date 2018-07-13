@@ -85,8 +85,30 @@ Default region name [None]: ap-southeast-2
 Default output format [None]: ENTER
  ```
  ### 2.3 Create a Security Group and Key Pair for the EC2 Instance
- ### 2.4 Launch and Connect to the Instance
- ### 2.5 Create a EMR Cluster
+ From the Windows Command Line, create a new security group and add a rule using command [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
+ ```
+ $ aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "security group for development environment"
+{
+"GroupId": "sg-b018ced5"
+}
+$ aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp --port 22 --cidr 0.0.0.0/0
+ ```
+ Create a key pair to connect to the instance using  command [create-key-pair](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html)
+ ```
+ $ aws ec2 create-key-pair --key-name devenv-key --query 'KeyMaterial' --output text > devenv-key.pem
+ ```
+  ### 2.4 Launch and Connect to the Instance
+  Launch the specified number of EC2 instances using command [run-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html)
+  ```
+  $ aws ec2 run-instances --image-id ami-xxxxxxxx --subnet-id subnet-xxxxxxxx --security-group-ids sg-b018ced5 --count 1 --instance-type t2.micro --key-name devenv-key --query 'Instances[0].InstanceId'
+"i-0787e4282810ef9cf"
+  ```
+  Get the public IP address of the instance using commnad [describe-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
+  ```
+ $ aws ec2 describe-instances --instance-ids i-0787e4282810ef9cf --query 'Reservations[0].Instances[0].PublicIpAddress'
+"54.183.22.255"
+  ```
+  ### 2.5 Create a EMR Cluster
 ##  3. Creating bash shell scripts to create a cluster
 Another way to create a cluster is using bash shell scripts which is basically a defined configuration of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 
