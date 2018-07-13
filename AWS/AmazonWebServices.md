@@ -1,10 +1,10 @@
 # Basic tasks with Amazon Web Services (AWS)
-This document summarise some useful topics which are necessary to get Zeppelin notebooks to run on Elastic Map Reduce (EMR) cluster. The first section of the document shows how to use web console interface. The second section provide some how to create a cluster using AWS Commnad Line Interface. Finally, the third section gives an case study of writing bash shell scripts to create a cluster.
+This document summarises some useful topics which are necessary to get Zeppelin notebooks to run on Elastic Map Reduce (EMR) cluster. The first section of the document shows how to use the web console interface. The second section provides how to create a cluster using AWS Command Line Interface. Finally, the third section gives an example of writing bash shell scripts to create a cluster.
 ##  1. AWS Management Console
 ### 1.1 Amazon EMR [Management Guide](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html) - Summary
 This section is a summary of Amazon tutorial to create an EMR cluster to run Zeppelin notebooks. An Overview of Amazon EMR could be found in this [link](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-overview.html).
 
-**Important note:** The clusters which you create will be charge for using AWS resources. Therefore, remember to terminate the clusters when you finish. 
+**Important note:** The clusters which you create will be charged for using AWS resources. Therefore, remember to terminate the clusters when you finish. 
 
 ####    Step 1: [Set up prerequisites](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prerequisites.html)
 - [ ] Sign Up for AWS
@@ -15,7 +15,7 @@ Using Quick Cluster Configuration Overview: to quickly create a cluster, open th
   - General Configuration
     - Cluster name
       - Logging: Enable/Disable Amazon EMR writes detailed log data.
-      - S3 folder: Specify a S3 bucket to store the log.
+      - S3 folder: Specify an S3 bucket to store the log.
     - Launch mode
       - Cluster: Amazon EMR will launch a cluster with applications from "Software Configuration".
       - Step execution: Steps which specify the included applications will be added. The cluster will be automatically terminated after all of the steps complete.
@@ -26,12 +26,12 @@ Using Quick Cluster Configuration Overview: to quickly create a cluster, open th
     - Use AWS Glue Data Catalog for table metadata: Use the AWS Glue Data Catalog to provide an external Hive metastore for Hive. More information about AWS GLue Data Catalog could be found in this [link](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-glue.html).
     
   - Hardware Configuration
-    - Instance type: Select the Amazon EC2 instance type that run in your cluster. Each type of instances is a combination of CPU, memory, storage and networking capacity. More information about Amazon EC2 Instance Types could be found in this [link](https://aws.amazon.com/ec2/instance-types/).
-    - Number of instances: Select number if instances. Each instance corresponds to a note in EMR cluster. Amazon will charge base on type and number of used instances. More information about Amazon EC2 Pricing could be found in this [link](https://aws.amazon.com/ec2/pricing/).
+    - Instance type: Select the Amazon EC2 instance type that runs in your cluster. Each type of instances is a combination of CPU, memory, storage and networking capacity. More information about Amazon EC2 Instance Types could be found in this [link](https://aws.amazon.com/ec2/instance-types/).
+    - Number of instances: Select number if instances. Each instance corresponds to a note in the EMR cluster. Amazon will charge base on type and number of used instances. More information about Amazon EC2 Pricing could be found in this [link](https://aws.amazon.com/ec2/pricing/).
 
   - Security and access
     - EC2 key pair: Use an existing EC2 key pair to SSH into the master node of EMR cluster.
-    - Permissions: Determine the permissions for EMR cluster.    
+    - Permissions: Determine the permissions for the EMR cluster.    
   - Choose **Create cluster**
 
 ####    Step 3: [Prepare your sample data and script](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-prepare-data-and-script.html)
@@ -45,10 +45,11 @@ Depending on the applications which are used, one or more steps will be added in
   - JAR location
   - Arguments
   - Action on failure
-- View the Results: To check the result, click on **Configuartion** tab then choose **View JSON**.
+- View the Results: To check the result, click on **Configuration** tab then choose **View JSON**.
 ####    Step 5: [Reset your environment](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-gs-reset-environment.html)
 - Deleting Your Amazon S3 Bucket
 - Terminating Your Cluster
+
 ### 1.2 Amazon EC2
 
 ##  2. AWS Command Line Interface (AWS CLI)
@@ -59,8 +60,8 @@ This section is a summary of AWS Command Line Interface - [User Guide](https://d
 - [ ] Install AWS CLI
 ### 2.2 Configuring the AWS CLI
 - Obtain AWS Access Key ID and Secret Key Access
-  From **AWS Management Console** window --> **Services** --> **IAM** (under **Security, Identity & Compliance** group) --> **Users** (from the left column) --> Choose your Username --> Choose **Security credentials** tab --> Click on **Create access key** under **Access keys** section. Save the **Access key ID** and **Secret Key Access**.
-- Import AWS profile by typing **aws configure --profile <profile name>** from Windows Commnand Line.
+  From **AWS Management Console** window --> **Services** --> **IAM** (under **Security, Identity & Compliance** group) --> **Users** (from the left column) --> Choose your Username --> Choose **Security credentials** tab --> Click on **Create access key** under **Access keys** section. Save the **Access Key ID** and **Secret Key Access**.
+- Import AWS profile by typing **aws configure --profile <profile name>** from Windows Command Line.
 ```
 $ aws configure --profile <default>
 AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
@@ -70,10 +71,14 @@ Default output format [None]: ENTER
  ```
   
 ##  3. Creating bash shell scripts to create a cluster
-Another way to create a cluster is using bash shell scripts which is basically a defined configurations of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
+Another way to create a cluster is using bash shell scripts which is basically a defined configuration of a cluster. This section will show how to write a .sh file along with its parameter files to create a cluster.
 
 #### Set up prerequisites
-In order to create a cluster from bash shell scripts, you may need [Git Bash/GUI](https://gitforwindows.org/) to run .sh files. 
+In order to create a cluster from bash shell scripts, you need to
+- [ ] Install Python
+- [ ] Install pip
+- [ ] Install AWS CLI
+- [ ] Install [Git Bash/GUI](https://gitforwindows.org/) to run .sh files. 
 #### - Create "ec2-attributes.json" file
   "ec2-attributes.json" contains  _Network_ as well as _Security and access_ parameters including:
 -- Keyname: Name of the keypair
@@ -175,9 +180,9 @@ aws emr create-cluster \
 	--release-label emr-5.13.0\
 	--ec2-attributes file://./ec2-attributes.json \
 	--service-role EMR_DefaultRole \
-    --applications Name=Spark Name=Zeppelin Name=Hadoop Name=Hive\
+    	--applications Name=Spark Name=Zeppelin Name=Hadoop Name=Hive\
 	--configurations file://./configurations.json \
-    --region ap-southeast-2 \
+    	--region ap-southeast-2 \
 	--no-auto-terminate \
 #	--scale-down-behavior TERMINATE_AT_TASK_COMPLETION \
     $@
@@ -185,11 +190,13 @@ aws emr create-cluster \
 ```
 
 ##  4. Relevant topics
-- [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html) 
-- [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
-- [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
-# Acknowledgments
+- [1]. [Creating a Spark Cluster on AWS EMR: a Tutorial](http://queirozf.com/entries/creating-a-spark-cluster-on-aws-emr-a-tutorial)
+- [2]. [Add an Apache Zeppelin UI to your Spark cluster on AWS EMR](http://queirozf.com/entries/add-an-apache-zeppelin-ui-to-your-spark-cluster-on-aws-emr) 
+- [3]. [Creates an Amazon EMR cluster with the specified configurations](https://docs.aws.amazon.com/cli/latest/reference/emr/create-cluster.html)
+- [4]. [Tutorial: Creating a Cluster with a EC2 Task Using the AWS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_AWSCLI_EC2.html)
+- [5]. [S3 backed notebooks for Zeppelin running on Amazon EMR](https://medium.com/@addnab/s3-backed-notebooks-for-zeppelin-running-on-amazon-emr-7a743d546846)
+- [6]. [Get AWS EMR Cluster ID from Name](https://stackoverflow.com/questions/48529819/get-aws-emr-cluster-id-from-name)
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+# Acknowledgments
+* [AWS Documentation](https://aws.amazon.com/documentation/)
+* Sample codes supplied by Techconnect
